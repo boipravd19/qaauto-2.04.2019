@@ -3,6 +3,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
@@ -48,8 +49,52 @@ public class LoginTest {
 
     @Test
     public void negativeLoginTest() {
+        System.setProperty("webdriver.chrome.driver", "/C:\\Users\\darb\\Downloads\\chromedriver_win32/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com");//открыть сайт
+        driver.manage().window().maximize();
 
+        WebElement userEmailField  = driver.findElement(By.xpath("//input[@id='login-email']"));
+        WebElement userPasswordField  = driver.findElement(By.xpath("//input[@id='login-password']"));
+        WebElement signInButton  = driver.findElement(By.xpath("//input[@id='login-submit']"));
+
+        userEmailField.sendKeys("2autodasha1@gmail.com");
+        userPasswordField.sendKeys("Shchorsa77");
+        signInButton.click();
+
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) { //ждать 3сек
+            e.printStackTrace();
+        }
+
+        WebElement profileMenuItem = driver.findElement(By.xpath("//li[@id='profile-nav-item']"));
+
+
+
+        driver.close();
     }
 
+    @Test
+    public void DashaTest () {
+        System.setProperty("webdriver.chrome.driver", "/C:\\Users\\darb\\Downloads\\chromedriver_win32/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com");//открыть сайт
+        driver.manage().window().maximize();
+
+        WebElement userEmailField  = driver.findElement(By.xpath("//input[@id='login-email']"));
+        WebElement userPasswordField  = driver.findElement(By.xpath("//input[@id='login-password']"));
+        WebElement signInButton  = driver.findElement(By.xpath("//input[@id='login-submit']"));
+
+        userEmailField.sendKeys("autodasha1@gmail.com");
+        userPasswordField.sendKeys("Shchor5sa77");
+        signInButton.click();
+
+        //input[@value='autodasha1@gmail.com']
+        WebElement userEmailFieldError  = driver.findElement(By.xpath(" //input[@value='autodasha1@gmail.com']"));
+        //Assert.assertEquals(driver.getTitle(),"autodasha1@gmail.com"); - ПОЧЕМУ НЕ ЭТО?
+        Assert.assertTrue(userEmailFieldError.isDisplayed(), "autodasha1@gmail.com");
+        driver.close();
+    }
 }
 
