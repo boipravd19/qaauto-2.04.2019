@@ -10,91 +10,40 @@ import static java.lang.Thread.sleep;
 
 public class LoginTest {
 
-    @Test
-    public void successfulLoginTest() throws InterruptedException {
+    @DataProvider
+    public Object[][] validDataProvider() { //метод возвращает массив массивов - матрицу
+        return new Object[][]{
+                { "autodasha1@gmail.com", "Shchorsa77" },
+                { "AUTOdasha1@gmail.com", "Shchorsa77" }
+        };
+    }
+    @Test (dataProvider = "validDataProvider") //берем данные с дата провайдера
+
+    public void successfulLoginTest(String userEmail, String userPassword) throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "/C:\\Users\\darb\\Downloads\\chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.linkedin.com");//открыть сайт
         driver.manage().window().maximize();
         Assert.assertEquals(driver.getTitle(),"LinkedIn: Log In or Sign Up ");//проверить этот текст
 
-        WebElement userEmailField  = driver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField  = driver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton  = driver.findElement(By.xpath("//input[@id='login-submit']"));
+        LoginPage loginPage = new LoginPage(driver); // создать физически в памяти экземпляр класса в переменной
+        //loginPage.login("autodasha1@gmail.com","Shchorsa77" ); // передали 2 параметра в классе login
+        loginPage.login(userEmail, userPassword);
 
-        userEmailField.sendKeys("autodasha1@gmail.com");
-        userPasswordField.sendKeys("Shchorsa77");
-        signInButton.click();
-
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) { //ждать 3сек
-            e.printStackTrace();
-        }
+        // loginPage - переменная
+        // LoginPage()  - новый класс
+        // LoginPage - тип данных
 
 
-        WebElement profileMenuItem = driver.findElement(By.xpath("//li[@id='profile-nav-item']"));
-        Assert.assertTrue(profileMenuItem.isDisplayed(), "Home page is not loaded");
-        profileMenuItem.click();
+        HomePage homePage = new HomePage(driver);
+        Assert.assertTrue(homePage.isProfileMenuItemDisplayed(), "Home page is not loaded");
+        homePage.clickOnProfileMenu();
+        Assert.assertEquals(homePage.getUserNameTextDisplayed(),"dasha zakharchenko" );
 
+        driver.quit();
 
-        //li[contains(@class, "nav-settings__topcard")] - ищем в этом классе кучочек друг
-        //ul[@id='nav-settings__dropdown-options']
-        //ul[@id='nav-settings__dropdown-options']//h3 - нашли то, что находится под h3
-
-        WebElement userNameText  = driver.findElement(By.xpath("//ul[@id='nav-settings__dropdown-options']//h3"));
-                Assert.assertEquals(userNameText.getText(), "dasha zakharchenko");
-        driver.close();
     }
 
-    @Test
-    public void negativeLoginTest() {
-        System.setProperty("webdriver.chrome.driver", "/C:\\Users\\darb\\Downloads\\chromedriver_win32/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com");//открыть сайт
-        driver.manage().window().maximize();
-
-        WebElement userEmailField  = driver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField  = driver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton  = driver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("2autodasha1@gmail.com");
-        userPasswordField.sendKeys("Shchorsa77");
-        signInButton.click();
-
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) { //ждать 3сек
-            e.printStackTrace();
-        }
-
-        WebElement profileMenuItem = driver.findElement(By.xpath("//li[@id='profile-nav-item']"));
-
-
-
-        driver.close();
-    }
-
-    @Test
-    public void DashaTest () {
-        System.setProperty("webdriver.chrome.driver", "/C:\\Users\\darb\\Downloads\\chromedriver_win32/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com");//открыть сайт
-        driver.manage().window().maximize();
-
-        WebElement userEmailField  = driver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField  = driver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton  = driver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("autodasha1@gmail.com");
-        userPasswordField.sendKeys("Shchor5sa77");
-        signInButton.click();
-
-        //input[@value='autodasha1@gmail.com']
-        WebElement userEmailFieldError  = driver.findElement(By.xpath(" //input[@value='autodasha1@gmail.com']"));
-        //Assert.assertEquals(driver.getTitle(),"autodasha1@gmail.com"); - ПОЧЕМУ НЕ ЭТО?
-        Assert.assertTrue(userEmailFieldError.isDisplayed(), "autodasha1@gmail.com");
-        driver.close();
-    }
 }
+
 
