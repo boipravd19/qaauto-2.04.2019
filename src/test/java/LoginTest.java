@@ -28,7 +28,7 @@ public class LoginTest {
 
         // loginPage - переменная
         // LoginPage()  - новый класс
-        // LoginPage - тип данных
+        // LoginPage - тип данныхвс
 
 
         HomePage homePage = new HomePage(driver);
