@@ -31,19 +31,42 @@ public class LoginPage {
         userEmailFieldPlaceholder = driver.findElement(By.xpath("//input[@placeholder='Email']"));
     }
 
-    public void login(String userEmail, String userPassword) { // to change parameters // ДЕЙСТВИЯ..вызываем метод при = new login
+    public HomePage login(String userEmail, String userPassword) { // to change parameters // ДЕЙСТВИЯ..вызываем метод при = new login
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
+//        try {
+//            sleep(3000);
+//        } catch (InterruptedException e) { //ждать 3сек
+//            e.printStackTrace();
+//        }
+        return new HomePage(driver);
+    }
 
-
-
+    public LoginPage loginToLogin(String userEmail, String userPassword) { // to change parameters // ДЕЙСТВИЯ..вызываем метод при = new login
+        userEmailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
         try {
             sleep(3000);
         } catch (InterruptedException e) { //ждать 3сек
             e.printStackTrace();
         }
 
+        return new LoginPage(driver);
+    }
+
+    public LoginSubmitPage loginToLoginSubmit(String userEmail, String userPassword) { // to change parameters // ДЕЙСТВИЯ..вызываем метод при = new login
+        userEmailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) { //ждать 3сек
+            e.printStackTrace();
+        }
+
+        return new LoginSubmitPage(driver);
     }
 
     public boolean isPageLoaded() {
